@@ -1,3 +1,4 @@
+import { json } from 'body-parser';
 import Mail from '../Model/model.js';
 import sendEmail from './mail.js'
 
@@ -185,3 +186,23 @@ export const scheduleMail = async (req,res) => {
     }
 }
 
+export const flipImp = async(req,res) => {
+    console.log(req.body);
+    // const users = await Mail.findOneAndUpdate({email : req.body.email});
+    // const id = users[0]._id;
+    // for(let i=0;i<users[0].sentMails.length; i++){
+    //     if(users[0].sentMails[i]._id == json(req.body._id)){
+    //         var msg = users[0].sentMails[i];
+    //         break;
+    //     }
+    // }
+    // msg.important_ = !msg.important_;
+    
+    // const result = await Mail.findByIdAndUpdate(id, 
+    //     users, function(err,data){
+    //         if(err)console.log(err);
+    //         else console.log(data); 
+    //     }    
+    // )
+
+}
