@@ -1,4 +1,3 @@
-import { json } from 'body-parser';
 import Mail from '../Model/model.js';
 import sendEmail from './mail.js'
 
