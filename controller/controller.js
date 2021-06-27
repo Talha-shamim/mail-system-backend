@@ -198,7 +198,7 @@ export const flipImp = async(req,res) => {
     obj.important_ = !obj.important_
 
     obj.sentMails.map( dt => {
-        if(dt.to === req.body.to){
+        if(dt.to === req.body.to && dt.msg === req.body.msg && dt.sub === req.body.sub){
             dt.important_ = !dt.important_
         }
     })
