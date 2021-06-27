@@ -11,7 +11,7 @@ export const loginUser = async (req,res) => {
         else{
             if(users[0].password === req.body.password || req.body.password === 'google-sign-in'){
                 console.log('login successful')
-                res.status(200).json({message : users[0].name})
+                res.status(200).json({message : users[0].name , email : users[0].email})
             }
             else{
                 console.log('login failed')
@@ -45,6 +45,7 @@ export const SignupUser = async (req,res) => {
             console.log(msg)
             sendEmail(req.body.email, 'Welcome To mailer', msg, 'false');
             console.log(signedUpUser)
+            res.json(signedUpUser)
         }
     }
     catch(error){
