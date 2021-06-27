@@ -3,8 +3,8 @@ import nodemailer from 'nodemailer';
 const transporter = nodemailer.createTransport({
     service : 'gmail',
     auth : {
-        user : 'ce19b030@iitp.ac.in',
-        pass : 'chuichui2607',
+        user : 'wethree0003@gmail.com',
+        pass : 'shubhamkimmynasheeli',
     }
 })
 
@@ -12,7 +12,7 @@ const sendEmail = (to,sub,msg,emoji) => {
     
     if(emoji !== 'false'){
         var mailOptions = {
-            from : 'ce19b030@iitp.ac.in',
+            from : 'wethree0003@gmail.com',
             to :  to,
             subject : sub,
             html: msg,
