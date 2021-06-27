@@ -13,15 +13,16 @@ app.use(cors());
 const CONNECTION_URL = "mongodb://localhost/mail_system";
 const PORT = 4000;
 
-mongoose
-  .connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() =>
-    app.listen(PORT, () =>
-      console.log(`Connection Established With MongoDB on port ${PORT}`)
-    )
-  )
-  .catch((error) => console.log(error.message));
-
+mongoose.connect(process.env.DATABASE, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+		useCreateIndex: true,
+		useFindAndModify: false
+	})
+	const connection = mongoose.connection
+	connection.once('open', () => {
+		console.log('atlas connection established successfully')
+	})
 
 app.use("/mail-system", allRoutes);
 
