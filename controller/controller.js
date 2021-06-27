@@ -24,9 +24,10 @@ export const loginUser = async (req,res) => {
     }
 }
 
-const newUserMsg = (name) => {
+const newUserMsg = (name,pass) => {
     const welcomeMsg = `<h2>Hi ${name}</h2>
                   <p>Thank you for registering with us<p>
+                  <p>Your password : ${pass}</p>
                   <img src="https://cdn.dribbble.com/users/7831180/screenshots/15641971/media/4fda4547e5a26974564b08bbd8753b4f.jpg?compress=1&resize=400x300"/>            
     `
     return welcomeMsg;
@@ -41,7 +42,7 @@ export const SignupUser = async (req,res) => {
         }
         else{
             const signedUpUser = await new Mail(req.body).save();
-            const msg = newUserMsg(req.body.name);
+            const msg = newUserMsg(req.body.name,req.body.password);
             console.log(msg)
             sendEmail(req.body.email, 'Welcome To mailer', msg, 'false');
             console.log(signedUpUser)
@@ -54,17 +55,19 @@ export const SignupUser = async (req,res) => {
 }
 
 
-const styleMsg = (msg, fontSize, fontStyle, fontWeight, color) => {
-    const styledMsg = `<p style="font-size:${fontSize}px; font-weight:${fontWeight}px; color:${color}; font-family:${fontStyle}; " >${msg}<p>
+const styleMsg = (msg, fontSize, fontStyle, fontWeight, color,fontType) => {
+    const styledMsg = `<p style="font-size:${fontSize}px; font-weight:${fontWeight}px; color:${color}; font-family:${fontStyle}; font-style : ${fontType}; " >${msg}<p>
     `
     return styledMsg;
 }
 
 export const sendMail = async (req,res) => {
+    console.log(req.body)
     try{
-        const mails = req.body.email.split(" ");
+        let mails = req.body.to.split(" ");
+        mails = mails + req.body.cc.split(" ");
         for(let i=0;i<mails.length;i++){
-            const modifiedMsg = styleMsg(req.body.msg,req.body.fontSize,req.body.fontStyle,req.body.fontWeight,req.body.color);
+            const modifiedMsg = styleMsg(req.body.msg,req.body.fontSize,req.body.fontStyle,req.body.fontWeight,req.body.color,req.body.fontType);
             try{
                 var addToDb = sendEmail(mails[i], req.body.subject, modifiedMsg,req.body.emoji);
             }
@@ -84,6 +87,7 @@ export const sendMail = async (req,res) => {
                         fontSize : req.body.fontSize,
                         fontStyle : req.body.fontStyle,
                         fontWeight : req.body.fontWeight,
+                        fontWeight : req.body.fontType,
                         color : req.body.color,
                     }
                 }
@@ -127,7 +131,8 @@ export const getScheduledMails = async (req,res) => {
 export const scheduleMail = async (req,res) => {
     console.log(req.body)
     try{
-        const mails = req.body.email.split(" ");
+        const mails = req.body.to.split(" ");
+        // mails = mails + req.body.cc.split(" ");
         for(let i=0;i<mails.length;i++){
             const modifiedMsg = styleMsg(req.body.msg,req.body.fontSize,req.body.fontStyle,req.body.fontWeight,req.body.color);
             try{
@@ -149,6 +154,7 @@ export const scheduleMail = async (req,res) => {
                         fontSize : req.body.fontSize,
                         fontStyle : req.body.fontStyle,
                         fontWeight : req.body.fontWeight,
+                        fontWeight : req.body.fontType,
                         color : req.body.color,
                         important_ : false,
                         time_ : req.body.time_,
