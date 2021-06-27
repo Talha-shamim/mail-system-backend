@@ -65,11 +65,21 @@ export const sendMail = async (req,res) => {
     console.log(req.body)
     try{
         let mails = req.body.to.split(" ");
-        mails = mails + req.body.cc.split(" ");
         for(let i=0;i<mails.length;i++){
             const modifiedMsg = styleMsg(req.body.msg,req.body.fontSize,req.body.fontStyle,req.body.fontWeight,req.body.color,req.body.fontType);
             try{
                 var addToDb = sendEmail(mails[i], req.body.subject, modifiedMsg,req.body.emoji);
+            }
+            catch(error){
+                console.log(error.message);
+            }
+        }   
+
+        let ccs = req.body.cc.split(" ");
+        for(let i=0;i<ccs.length;i++){
+            const modifiedMsg = styleMsg(req.body.msg,req.body.fontSize,req.body.fontStyle,req.body.fontWeight,req.body.color,req.body.fontType);
+            try{
+                var addToDb = sendEmail(ccs[i], req.body.subject, modifiedMsg,req.body.emoji);
             }
             catch(error){
                 console.log(error.message);
@@ -82,6 +92,7 @@ export const sendMail = async (req,res) => {
                     sentMails : {
                         to : req.body.email,
                         sub : req.body.subject,
+                        cc : req.body.cc,
                         msg : req.body.msg,
                         emoji : req.body.emoji,
                         fontSize : req.body.fontSize,
@@ -131,8 +142,7 @@ export const getScheduledMails = async (req,res) => {
 export const scheduleMail = async (req,res) => {
     console.log(req.body)
     try{
-        const mails = req.body.to.split(" ");
-        // mails = mails + req.body.cc.split(" ");
+        let mails = req.body.to.split(" ");
         for(let i=0;i<mails.length;i++){
             const modifiedMsg = styleMsg(req.body.msg,req.body.fontSize,req.body.fontStyle,req.body.fontWeight,req.body.color);
             try{
@@ -150,6 +160,7 @@ export const scheduleMail = async (req,res) => {
                         to : req.body.email,
                         sub : req.body.subject,
                         msg : req.body.msg,
+                        cc : req.body.cc,
                         emoji : req.body.emoji,
                         fontSize : req.body.fontSize,
                         fontStyle : req.body.fontStyle,
