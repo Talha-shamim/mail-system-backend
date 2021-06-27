@@ -28,6 +28,7 @@ const MailSchema = mongoose.Schema({
             color : String,
             fontWeight : String,
             important_ : Boolean,
+            time : { type : Date, default: Date.now } 
         }
     ],
 
@@ -45,6 +46,7 @@ const MailSchema = mongoose.Schema({
             fontWeight : String,
             important_ : Boolean,
             time_ : String,
+            time : { type : Date, default: Date.now }
         },
     ],
 });

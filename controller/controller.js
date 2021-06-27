@@ -90,7 +90,7 @@ export const sendMail = async (req,res) => {
             const result = await Mail.findOneAndUpdate({email : req.body.senderEmail},{
                 $push : {
                     sentMails : {
-                        to : req.body.email,
+                        to : req.body.to,
                         sub : req.body.subject,
                         cc : req.body.cc,
                         msg : req.body.msg,
@@ -100,6 +100,7 @@ export const sendMail = async (req,res) => {
                         fontWeight : req.body.fontWeight,
                         fontWeight : req.body.fontType,
                         color : req.body.color,
+                        important_ : req.body.important_,
                     }
                 }
             })
@@ -119,7 +120,7 @@ export const sendMail = async (req,res) => {
 
 export const getAllMails = async (req,res) => {
     try{
-        const users = await Mail.find({email : req.body.email})
+        const users = await Mail.find({email : req.body.email}).sort({time : -1})
         res.status(200).json(users[0].sentMails)
     }
     catch(error){
@@ -185,9 +186,32 @@ export const scheduleMail = async (req,res) => {
     }
 }
 
+
 export const flipImp = async(req,res) => {
     console.log(req.body);
-    // const users = await Mail.findOneAndUpdate({email : req.body.email});
+    const users = await Mail.find({email : req.body.email});
+    var obj 
+    users.map( dt => {
+        obj=dt
+    })
+
+    obj.important_ = !obj.important_
+
+    obj.sentMails.map( dt => {
+        if(dt.to === req.body.to){
+            dt.important_ = !dt.important_
+        }
+    })
+    console.log(obj._id)
+
+        await Mail.findByIdAndUpdate( obj._id , obj , (err , data) => {
+            if(err){
+                console.log('err in line 68 ' , err)
+            }
+            else {
+                res.json('updated')
+            }
+        })
     // const id = users[0]._id;
     // for(let i=0;i<users[0].sentMails.length; i++){
     //     if(users[0].sentMails[i]._id == json(req.body._id)){
